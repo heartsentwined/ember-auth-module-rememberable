@@ -1,6 +1,8 @@
 # rememberable module for ember-auth
 
 [![Build Status](https://secure.travis-ci.org/heartsentwined/ember-auth-module-rememberable.png)](http://travis-ci.org/heartsentwined/ember-auth-module-rememberable)
+[![Gem Version](https://badge.fury.io/rb/ember-auth-module-rememberable-source.png)](http://badge.fury.io/rb/ember-auth-module-rememberable-source)
+[![NPM version](https://badge.fury.io/js/ember-auth.png)](http://badge.fury.io/js/ember-auth-module-rememberable)
 
 "Remember me" feature for ember-auth.
 
