@@ -1,5 +1,7 @@
 # rememberable module for ember-auth
 
+[![Build Status](https://secure.travis-ci.org/heartsentwined/ember-auth-module-rememberable.png)](http://travis-ci.org/heartsentwined/ember-auth-module-rememberable)
+
 "Remember me" feature for ember-auth.
 
 ## Config
