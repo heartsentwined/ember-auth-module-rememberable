@@ -3,9 +3,9 @@ class Em.Auth.RememberableAuthModule
     @config? || (@config = @auth.rememberable)
     @patch()
 
-    @auth.addHandler 'signInSuccess',  @remember
-    @auth.addHandler 'signInError',    @forget
-    @auth.addHandler 'signOutSuccess', @forget
+    @auth.addHandler 'signInSuccess',  @remember.bind(@)
+    @auth.addHandler 'signInError',    @forget.bind(@)
+    @auth.addHandler 'signOutSuccess', @forget.bind(@)
 
   # try to recall a remembered session, if any
   #
