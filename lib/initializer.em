@@ -4,5 +4,6 @@ Em.onLoad 'Ember.Application', (application) ->
     before: 'ember-auth-load'
 
     initialize: (container, app) ->
-      app.register 'authModule:rememberable', Em.Auth.RememberableAuthModule
+      app.register 'authModule:rememberable', Em.Auth.RememberableAuthModule, \
+      { singleton: true }
       app.inject 'authModule:rememberable', 'auth', 'auth:main'
