@@ -39,6 +39,7 @@ set$(get$(Em, 'Auth'), 'RememberableAuthModule', Ember.Object.extend({
     if (null == opts)
       opts = {};
     if (!get$(get$(this, 'auth'), 'signedIn') && (token = this.retrieveToken())) {
+      set$(this, 'fromRecall', true);
       opts.data || (opts.data = {});
       get$(opts, 'data')[get$(get$(this, 'config'), 'tokenKey')] = token;
       if (null != get$(get$(this, 'config'), 'endPoint')) {
@@ -52,7 +53,9 @@ set$(get$(Em, 'Auth'), 'RememberableAuthModule', Ember.Object.extend({
   },
   remember: function (data) {
     var token;
-    this.forget();
+    if (!get$(this, 'fromRecall'))
+      this.forget();
+    set$(this, 'fromRecall', false);
     if (token = data[get$(get$(this, 'config'), 'tokenKey')])
       if (!(token === this.retrieveToken())) {
         return this.storeToken(token);
