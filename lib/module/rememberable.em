@@ -1,11 +1,28 @@
 class Em.Auth.RememberableAuthModule
   init: ->
-    @config? || (@config = @auth.rememberable)
+    @auth._config 'rememberable', @_defaultConfig
+    @config? || (@config = @auth._config 'rememberable')
     @patch()
 
     @auth.addHandler 'signInSuccess',  @remember.bind(@)
     @auth.addHandler 'signInError',    @forget.bind(@)
     @auth.addHandler 'signOutSuccess', @forget.bind(@)
+
+  _defaultConfig:
+    # [string] key for the remember token in server requests and payloads
+    tokenKey: null
+
+    # [number] (opt) valid period (days) for the remember token;
+    #   default: 14
+    period: 14
+
+    # [bool] (opt) whether to auto-recall a remembered session;
+    #   default: true
+    autoRecall: true
+
+    # [string|null] (opt) a different end point for sign in requests
+    #   from rememberable
+    endPoint: null
 
   # try to recall a remembered session, if any
   #
