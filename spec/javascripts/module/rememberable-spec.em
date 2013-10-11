@@ -37,13 +37,13 @@ describe 'Em.Auth.RememberableAuthModule', ->
 
       describe 'retrieveToken succeeds', ->
         beforeEach ->
-          Em.run -> auth.rememberable.tokenKey = 'key'
+          Em.run -> rememberable.config.tokenKey = 'key'
           sinon.collection.stub rememberable, 'retrieveToken', -> 'foo'
 
-        afterEach -> Em.run -> auth.rememberable.endPoint = null
+        afterEach -> Em.run -> rememberable.config.endPoint = null
 
         describe 'endPoint set', ->
-          beforeEach -> Em.run -> auth.rememberable.endPoint = 'bar'
+          beforeEach -> Em.run -> rememberable.config.endPoint = 'bar'
 
           it 'calls signIn', ->
             Em.run -> rememberable.recall()
@@ -68,7 +68,7 @@ describe 'Em.Auth.RememberableAuthModule', ->
     beforeEach ->
       storeTokenSpy = sinon.collection.spy rememberable, 'storeToken'
       forgetSpy     = sinon.collection.spy rememberable, 'forget'
-      Em.run -> auth.rememberable.tokenKey = 'key'
+      Em.run -> rememberable.config.tokenKey = 'key'
 
     it 'delegates to #forget', ->
       Em.run -> rememberable.remember {}
@@ -109,7 +109,7 @@ describe 'Em.Auth.RememberableAuthModule', ->
   'store', ['ember-auth-rememberable', 'foo', { expires: 1 }], ->
     beforeEach ->
       @from = rememberable; @to = auth._session
-      Em.run -> auth.rememberable.period = 1
+      Em.run -> rememberable.config.period = 1
 
   follow 'delegation', 'removeToken', [], \
   'remove', ['ember-auth-rememberable'], ->
