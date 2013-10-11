@@ -36,6 +36,7 @@ class Em.Auth.RememberableAuthModule
   #   else returns a resolved empty promise
   recall: (opts = {}) ->
     if !@auth.signedIn && (token = @retrieveToken())
+      @fromRecall = true # see doc at remember()
       opts.data ||= {}
       opts.data[@config.tokenKey] = token
       if @config.endPoint?
@@ -51,7 +52,12 @@ class Em.Auth.RememberableAuthModule
   # @param data [object] the `canonicalize`d data object
   remember: (data) ->
     # clear any existing remembered session first
-    @forget()
+    # but if we come from recall, then don't clear anything -
+    # that remembered session is supposed to be still valid
+    # regardless of whether server echoes back the remember token
+    @forget() unless @fromRecall
+
+    @fromRecall = false
 
     if token = data[@config.tokenKey]
       @storeToken(token) unless token == @retrieveToken()

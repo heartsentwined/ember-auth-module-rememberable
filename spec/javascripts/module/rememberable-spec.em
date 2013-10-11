@@ -12,7 +12,7 @@ describe 'Em.Auth.RememberableAuthModule', ->
 
   describe '#recall', ->
     beforeEach ->
-      spy = sinon.collection.spy auth, 'signIn'
+      spy = sinon.collection.stub auth, 'signIn', ->
 
     follow 'return promise', ->
       beforeEach -> @return = rememberable.recall()
@@ -61,6 +61,10 @@ describe 'Em.Auth.RememberableAuthModule', ->
             foo: 'bar'
             data: { key: 'foo' }
 
+        it 'marks fromRecall as true', ->
+          Em.run -> rememberable.recall()
+          expect(rememberable.fromRecall).toBe true
+
   describe '#remember', ->
     storeTokenSpy = null
     forgetSpy     = null
@@ -70,9 +74,22 @@ describe 'Em.Auth.RememberableAuthModule', ->
       forgetSpy     = sinon.collection.spy rememberable, 'forget'
       Em.run -> rememberable.config.tokenKey = 'key'
 
-    it 'delegates to #forget', ->
-      Em.run -> rememberable.remember {}
-      expect(forgetSpy).toHaveBeenCalled()
+    afterEach ->
+      Em.run -> rememberable.fromRecall = false
+
+    describe 'fromRecall = true', ->
+      beforeEach -> Em.run -> rememberable.fromRecall = true
+
+      it 'does not delegate to #forget', ->
+        Em.run -> rememberable.remember {}
+        expect(forgetSpy).not.toHaveBeenCalled()
+
+    describe 'fromRecall = false', ->
+      beforeEach -> Em.run -> rememberable.fromRecall = false
+
+      it 'delegates to #forget', ->
+        Em.run -> rememberable.remember {}
+        expect(forgetSpy).toHaveBeenCalled()
 
     describe 'remember token found from response', ->
 
