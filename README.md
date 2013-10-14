@@ -67,3 +67,8 @@ App.FooRoute = Ember.Route.extend
 # clear any existing remembered session
 @auth.get('module.rememberable').forget()
 ```
+
+License
+=======
+
+MIT
