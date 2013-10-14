@@ -78,17 +78,11 @@ set$(get$(Em, 'Auth'), 'RememberableAuthModule', Ember.Object.extend({
     self = this;
     return get$(Em, 'Route').reopen({
       beforeModel: function () {
-        var ret;
-        ret = this._super.apply(this, arguments);
-        if (!(get$(get$(self, 'config'), 'autoRecall') && !get$(get$(self, 'auth'), 'signedIn')))
-          return ret;
-        if (typeof get$(ret, 'then') === 'function') {
-          return ret.then(function () {
-            return self.recall();
-          });
-        } else {
+        return get$(self, 'auth')._ensurePromise(this._super.apply(this, arguments)).then(function () {
+          if (!(get$(get$(self, 'config'), 'autoRecall') && !get$(get$(self, 'auth'), 'signedIn')))
+            return;
           return self.recall();
-        }
+        });
       }
     });
   }
