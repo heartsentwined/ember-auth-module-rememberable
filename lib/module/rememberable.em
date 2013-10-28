@@ -4,10 +4,15 @@ class Em.Auth.RememberableAuthModule
     @config? || (@config = @auth._config 'rememberable')
     @patch()
 
-    @auth.addHandler 'signInSuccess',  @remember.bind(@)
-    @auth.addHandler 'signInError',    @forget.bind(@)
-    @auth.addHandler 'signOutSuccess', @forget.bind(@)
+    @signInSuccessHandler = @auth.addHandler 'signInSuccess',  @remember.bind(@)
+    @signInErrorHandler = @auth.addHandler 'signInError',    @forget.bind(@)
+    @signOutSuccessHandler = @auth.addHandler 'signOutSuccess', @forget.bind(@)
 
+  willDestroy: ->
+    @auth.removeHandler 'signInSuccess', @signInSuccessHandler
+    @auth.removeHandler 'signInError', @signInErrorHandler
+    @auth.removeHandler 'signOutSuccess', @signOutSuccessHandler
+    
   _defaultConfig:
     # [string] key for the remember token in server requests and payloads
     tokenKey: null
