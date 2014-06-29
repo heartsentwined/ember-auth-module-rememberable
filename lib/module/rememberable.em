@@ -24,6 +24,9 @@ class Em.Auth.RememberableAuthModule
     #   from rememberable
     endPoint: null
 
+    # static data to be sent with recall
+    data: {}
+
   # try to recall a remembered session, if any
   #
   # @param opts [object] (opt) jquery.ajax(settings) -style options object,
@@ -38,6 +41,7 @@ class Em.Auth.RememberableAuthModule
     if !@auth.signedIn && (token = @retrieveToken())
       @fromRecall = true # see doc at remember()
       opts.data ||= {}
+      opts.data = $.extend true, @config.data, opts.data
       opts.data[@config.tokenKey] = token
       if @config.endPoint?
         @auth.signIn @config.endPoint, opts
